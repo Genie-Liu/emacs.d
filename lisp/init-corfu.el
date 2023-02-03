@@ -30,10 +30,10 @@
 
 ;; Add extensions
 
-;; (when  (maybe-require-package 'cape)
-;;   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-;;   (add-to-list 'completion-at-point-functions #'cape-file)
-;;   )
+(when  (maybe-require-package 'cape)
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  )
 
 ;;(add-to-list 'completion-at-point-functions #'cape-history)
 ;;(add-to-list 'completion-at-point-functions #'cape-keyword)

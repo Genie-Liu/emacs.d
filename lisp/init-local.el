@@ -3,9 +3,10 @@
 ;;; Code:
 
 ;; set org agenda files
-(setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
-(setq org-agenda-span 'week)
-
+(when (file-exists-p "~/org/")
+  (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
+  (setq org-agenda-span 'week)
+  )
 
 ;; (maybe-require-package 'json-reformat)
 ;; (setq json-reformat:indent-width 4)
