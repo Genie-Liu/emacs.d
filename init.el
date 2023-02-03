@@ -182,6 +182,9 @@
 ;; check typos in buffer
 (require 'init-typos)
 
+;; support jump
+(require 'init-dump-jump)
+
 ;; add treemacs
 ;; (require 'init-treemacs)
 
