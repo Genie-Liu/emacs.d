@@ -185,6 +185,9 @@
 ;; support jump
 (require 'init-dump-jump)
 
+;; support elixir-mode
+(require 'init-elixir)
+
 ;; add treemacs
 ;; (require 'init-treemacs)
 
