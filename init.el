@@ -33,7 +33,7 @@
 
 ;; Bootstrap config
 
-
+(setq image-types (cons 'svg image-types))
 (setq custom-file (locate-user-emacs-file "custom.el"))
 (require 'init-utils)
 (require 'init-site-lisp) ;; Must come before elpa, as it may provide package.el
@@ -171,7 +171,7 @@
 ;; extenstion added by personal used
 
 ;; sidebar for file view
-;; (require 'init-dired-sidebar)
+(require 'init-dired-sidebar)
 
 ;; protobuf file preview
 (require 'init-protobuf)
@@ -187,6 +187,12 @@
 
 ;; support elixir-mode
 (require 'init-elixir)
+
+;; support cpp-mode
+(require 'init-cpp)
+
+;;  yasnippet template
+(require 'init-yasnippet)
 
 ;; add treemacs
 ;; (require 'init-treemacs)

@@ -5,8 +5,9 @@
 
 ;;; Code:
 
-(require-package 'use-package)
 
+(require-package 'use-package)
+(require-package 'treemacs)
 
 (use-package treemacs
              :ensure t

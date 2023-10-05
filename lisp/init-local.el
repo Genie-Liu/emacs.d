@@ -7,7 +7,8 @@
 ;; (require-package 'elisp-format)
 
 ;; theme settings
-(setq custom-enabled-themes '(sanityinc-tomorrow-bright))
+(setq custom-enabled-themes '(sanityinc-solarized-light))
+;; (setq custom-enabled-themes '(sanityinc-tomorrow-bright))
 (reapply-themes)
 
 ;; set org agenda files
@@ -15,16 +16,16 @@
 (setq org-return-follows-link t
       org-deadline-warning-days 30)
 
-(when (file-exists-p "~/org/")
+(when (file-exists-p "~/OneDrive/documents/sync_doc/org/")
   ;; (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
-  (setq org-agenda-files '("~/org/inbox.org"
-                           "~/org/repeats.org"
-                           "~/org/projects.org"
-                           "~/org/work.org"
-                           "~/org/improve.org")))
+  (setq org-agenda-files '("~/OneDrive/documents/sync_doc/org/inbox.org"
+                           "~/OneDrive/documents/sync_doc/org/repeats.org"
+                           "~/OneDrive/documents/sync_doc/org/projects.org"
+                           "~/OneDrive/documents/sync_doc/org/work.org"
+                           "~/OneDrive/documents/sync_doc/org/improve.org")))
 
 (setq org-capture-templates
-      `(("t" "todo" entry (file "~/org/inbox.org")  ; "" => `org-default-notes-file'
+      `(("t" "todo" entry (file "~/OneDrive/documents/sync_doc/org/inbox.org")  ; "" => `org-default-notes-file'
          "* TODO %?\n%U\n" :clock-resume t)
         ("n" "note" entry (file "")
          "* %? :NOTE:\n%U\n%a\n" :clock-resume t)
@@ -40,15 +41,15 @@
                   ((org-agenda-span 'week)))
           (todo "TODO"
                 ((org-agenda-overriding-header "Unscheduled work tasks")
-                 (org-agenda-files '("~/org/work.org"))
+                 (org-agenda-files '("~/OneDrive/documents/sync_doc/org/work.org"))
                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))))
           (todo "TODO"
                 ((org-agenda-overriding-header "Unscheduled tasks")
-                 (org-agenda-files '("~/org/inbox.org"))
+                 (org-agenda-files '("~/OneDrive/documents/sync_doc/org/inbox.org"))
                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))))
           (todo "TODO"
                 ((org-agenda-overriding-header "Unscheduled projects tasks")
-                 (org-agenda-files '("~/org/projects.org"))
+                 (org-agenda-files '("~/OneDrive/documents/sync_doc/org/projects.org"))
                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))))))
         ;; default setting of agenda
         ("n" "Agenda and all TODOs"
