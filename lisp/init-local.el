@@ -66,6 +66,12 @@
 (custom-set-variables
  '(markdown-command "/opt/homebrew/bin/pandoc"))
 
+;; setting for eglot
+(add-hook 'c-mode-hook 'eglot-ensure)
+(add-hook 'c++-mode-hook 'eglot-ensure)
+(add-hook 'python-mode-hook 'eglot-ensure)
+
+
 
 (defun my-get-file-name ()
   "Put the current file name on the clipboard"
