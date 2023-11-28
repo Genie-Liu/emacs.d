@@ -60,5 +60,9 @@
 ;; (setq json-reformat:indent-width 4)
 (setq json-encoding-default-indentation "    ")
 
+;; set pandoc path
+(custom-set-variables
+ '(markdown-command "/opt/homebrew/bin/pandoc"))
+
 (provide 'init-local)
 ;;; init-locales.el ends here
