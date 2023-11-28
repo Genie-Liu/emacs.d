@@ -3,6 +3,9 @@
 ;;; Code:
 
 
+(require-package 'elisp-format)
+
+
 ;; pretty format for elisp-mode
 ;; (require-package 'elisp-format)
 
@@ -13,8 +16,7 @@
 
 ;; set org agenda files
 
-(setq org-return-follows-link t
-      org-deadline-warning-days 30)
+(setq org-return-follows-link t org-deadline-warning-days 30)
 
 (when (file-exists-p "~/OneDrive/documents/sync_doc/org/")
   ;; (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
@@ -24,12 +26,12 @@
                            "~/OneDrive/documents/sync_doc/org/work.org"
                            "~/OneDrive/documents/sync_doc/org/improve.org")))
 
-(setq org-capture-templates
-      `(("t" "todo" entry (file "~/OneDrive/documents/sync_doc/org/inbox.org")  ; "" => `org-default-notes-file'
-         "* TODO %?\n%U\n" :clock-resume t)
-        ("n" "note" entry (file "")
-         "* %? :NOTE:\n%U\n%a\n" :clock-resume t)
-        ))
+(setq org-capture-templates `(("t" "todo" entry (file "~/OneDrive/documents/sync_doc/org/inbox.org")
+                                        ; "" => `org-default-notes-file'
+                               "* TODO %?\n%U\n"
+                               :clock-resume t)
+                              ("n" "note" entry (file "") "* %? :NOTE:\n%U\n%a\n"
+                               :clock-resume t)))
 
 ;; (setq org-capture-templates
 ;;       '(("t" "Todo" entry (file "~/org/inbox.org") "* TODO %?\n %i\n %a")))
@@ -63,6 +65,21 @@
 ;; set pandoc path
 (custom-set-variables
  '(markdown-command "/opt/homebrew/bin/pandoc"))
+
+
+(defun my-get-file-name ()
+  "Put the current file name on the clipboard"
+  (interactive)
+  (let ((filename (if (equal major-mode 'dired-mode) default-directory (buffer-file-name)))
+        (x-select-enable-clipboard t))
+    (kill-new filename)))
+
+(defun my-get-name ()
+  "Put the current name on the clipboard"
+  (interactive)
+  (let ((filename (if (equal major-mode 'dired-mode) default-directory (buffer-name)))
+        (x-select-enable-clipboard t))
+    (kill-new filename)))
 
 (provide 'init-local)
 ;;; init-locales.el ends here
