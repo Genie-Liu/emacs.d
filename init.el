@@ -72,7 +72,7 @@
 (require 'init-uniquify)
 (require 'init-ibuffer)
 (require 'init-flymake)
-(require 'init-eglot)
+;; (require 'init-eglot)
 
 (require 'init-recentf)
 (require 'init-minibuffer)
@@ -85,43 +85,43 @@
 (require 'init-editing-utils)
 (require 'init-whitespace)
 
-(require 'init-vc)
-(require 'init-darcs)
+;; (require 'init-vc)
+;; (require 'init-darcs)
 (require 'init-git)
 (require 'init-github)
 
 (require 'init-projectile)
 
 (require 'init-compile)
-(require 'init-crontab)
+;; (require 'init-crontab)
 (require 'init-textile)
 (require 'init-markdown)
 (require 'init-csv)
-(require 'init-erlang)
-(require 'init-javascript)
-(require 'init-php)
+;; (require 'init-erlang)
+;; (require 'init-javascript)
+;; (require 'init-php)
 (require 'init-org)
-(require 'init-nxml)
-(require 'init-html)
-(require 'init-css)
-(require 'init-haml)
+;; (require 'init-nxml)
+;; (require 'init-html)
+;; (require 'init-css)
+;; (require 'init-haml)
 (require 'init-http)
 (require 'init-python)
-(require 'init-haskell)
-(require 'init-elm)
-(require 'init-purescript)
-(require 'init-ruby)
-(require 'init-rails)
+;; (require 'init-haskell)
+;; (require 'init-elm)
+;; (require 'init-purescript)
+;; (require 'init-ruby)
+;; (require 'init-rails)
 (require 'init-sql)
-(require 'init-ocaml)
+;; (require 'init-ocaml)
 (require 'init-j)
-(require 'init-nim)
-(require 'init-rust)
-(require 'init-toml)
+;; (require 'init-nim)
+;; (require 'init-rust)
+;; (require 'init-toml)
 (require 'init-yaml)
 (require 'init-docker)
 (require 'init-terraform)
-(require 'init-nix)
+;; (require 'init-nix)
 (maybe-require-package 'nginx-mode)
 (maybe-require-package 'just-mode)
 (when (maybe-require-package 'just-ts-mode)
@@ -191,31 +191,31 @@
 (require 'init-locales)
 
 
-;; extenstion added by personal used
+;; extension added by personal used
 
 ;; sidebar for file view
-(require 'init-dired-sidebar)
+;; (require 'init-dired-sidebar)
 
 ;; protobuf file preview
-(require 'init-protobuf)
+;; (require 'init-protobuf)
 
 ;; expand tokens
 (require 'init-expand-region)
 
 ;; check typos in buffer
-(require 'init-typos)
+;; (require 'init-typos)
 
 ;; support jump
-(require 'init-dump-jump)
+;; (require 'init-dump-jump)
 
 ;; support elixir-mode
-(require 'init-elixir)
+;; (require 'init-elixir)
 
 ;; support cpp-mode
-(require 'init-cpp)
+;; (require 'init-cpp)
 
 ;;  yasnippet template
-(require 'init-yasnippet)
+;; (require 'init-yasnippet)
 
 ;; add treemacs
 ;; (require 'init-treemacs)

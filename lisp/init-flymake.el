@@ -31,5 +31,9 @@
             (lambda ()
               (add-hook 'eldoc-documentation-functions 'flymake-eldoc-function nil t))))
 
+(setq-default flycheck-clang-include-path
+              '("/usr/local/include"
+                "/Users/jianshiliu/Documents/learn/github/leveldb/include"))
+
 (provide 'init-flymake)
 ;;; init-flymake.el ends here

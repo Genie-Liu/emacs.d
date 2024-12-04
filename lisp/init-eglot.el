@@ -8,9 +8,13 @@
   (maybe-require-package 'consult-eglot))
 
 (require 'eglot)
+
 (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
 (add-to-list 'eglot-server-programs '((python-mode) "pylsp"))
 
+;; (require 'init-metal)
+;; (add-to-list 'eglot-server-programs '((scala-mode) . "metals-emacs"))
+;; (add-hook 'scala-mode-hook 'eglot-ensure)
 
 (provide 'init-eglot)
 ;;; init-eglot.el ends here
