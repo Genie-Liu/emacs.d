@@ -319,6 +319,7 @@ The DWIM behaviour of this command is as follows:
 ;; emacs-rime setting: https://github.com/DogLooksGood/emacs-rime/blob/master/INSTALLATION.org
 ;; 1. extract pre-compiled librime to rime-librime-root. Ref: https://github.com/rime/librime/releases/
 ;; 2. add the header-root which contains the <emacs-module.h> header file. Depends on where you install Emacs
+;; Some configuration for rime: https://github.com/DogLooksGood/emacs-rime/tree/master?tab=readme-ov-file#%E6%89%93%E5%BC%80-rime-%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6
 (use-package rime
   :custom
   (default-input-method "rime")
