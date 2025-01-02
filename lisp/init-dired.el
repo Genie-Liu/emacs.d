@@ -19,6 +19,8 @@
 
 (with-eval-after-load 'dired
   (setq dired-recursive-deletes 'top)
+  (add-hook 'dired-mode-hook 'dired-hide-details-mode)
+  (add-hook 'dired-mode-hook 'hl-line-mode)
   (define-key dired-mode-map [mouse-2] 'dired-find-file)
   (define-key dired-mode-map (kbd "C-c C-q") 'wdired-change-to-wdired-mode))
 

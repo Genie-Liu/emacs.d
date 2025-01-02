@@ -21,15 +21,26 @@
   (setq-default corfu-quit-no-match 'separator)
   (add-hook 'after-init-hook 'global-corfu-mode)
 
-
+  (define-key corfu-mode-map (kbd "<tab>") 'corfu-complete)
 
   (with-eval-after-load 'corfu
     (corfu-popupinfo-mode))
+
+
+  (setq tab-always-indent 'complete)
+  (setq corfu-preview-current nil)
+  (setq corfu-min-width 20)
+  (setq corfu-popupinfo-delay '(1.25 . 0.5))
+
 
   ;; Make Corfu also work in terminals, without disturbing usual behaviour in GUI
   (when (maybe-require-package 'corfu-terminal)
     (with-eval-after-load 'corfu
       (corfu-terminal-mode)))
+
+  (with-eval-after-load 'savehist
+    (corfu-history-mode 1)
+    (add-to-list 'savehist-additional-variables 'corfu-history))
 
   ;; TODO: https://github.com/jdtsmith/kind-icon
   )

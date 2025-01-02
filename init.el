@@ -63,7 +63,7 @@
 
 (require 'init-frame-hooks)
 (require 'init-xterm)
-(require 'init-themes)
+;; (require 'init-themes)
 (require 'init-osx-keys)
 (require 'init-gui-frames)
 (require 'init-dired)
@@ -72,7 +72,7 @@
 (require 'init-uniquify)
 (require 'init-ibuffer)
 (require 'init-flymake)
-;; (require 'init-eglot)
+(require 'init-eglot)
 
 (require 'init-recentf)
 (require 'init-minibuffer)
@@ -114,27 +114,27 @@
 ;; (require 'init-rails)
 (require 'init-sql)
 ;; (require 'init-ocaml)
-(require 'init-j)
+;; (require 'init-j)
 ;; (require 'init-nim)
 ;; (require 'init-rust)
 ;; (require 'init-toml)
 (require 'init-yaml)
-(require 'init-docker)
-(require 'init-terraform)
+;; (require 'init-docker)
+;; (require 'init-terraform)
 ;; (require 'init-nix)
-(maybe-require-package 'nginx-mode)
-(maybe-require-package 'just-mode)
-(when (maybe-require-package 'just-ts-mode)
+;; (maybe-require-package 'nginx-mode)
+;; (maybe-require-package 'just-mode)
+;; (when (maybe-require-package 'just-ts-mode)
   ;; Undo overly-optimistic autoloading, so that things still work in
   ;; Emacs 29 without treesitter
-  (sanityinc/remove-auto-mode  'just-ts-mode))
-(maybe-require-package 'justl)
+  ;; (sanityinc/remove-auto-mode  'just-ts-mode))
+;; (maybe-require-package 'justl)
 
 (require 'init-paredit)
 (require 'init-lisp)
 (require 'init-sly)
-(require 'init-clojure)
-(require 'init-clojure-cider)
+;; (require 'init-clojure)
+;; (require 'init-clojure-cider)
 
 (when *spell-check-support-enabled*
   (require 'init-spelling))
@@ -145,9 +145,9 @@
 (require 'init-dash)
 
 (require 'init-ledger)
-(require 'init-lua)
-(require 'init-uiua)
-(require 'init-zig)
+;; (require 'init-lua)
+;; (require 'init-uiua)
+;; (require 'init-zig)
 (require 'init-terminals)
 
 ;; Extra packages which don't require any configuration
@@ -167,7 +167,7 @@
 (when (fboundp 'global-eldoc-mode)
   (add-hook 'after-init-hook 'global-eldoc-mode))
 
-(require 'init-direnv)
+;; (require 'init-direnv)
 
 (when (and (require 'treesit nil t)
            (fboundp 'treesit-available-p)
