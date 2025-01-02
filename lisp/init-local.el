@@ -38,7 +38,7 @@
   :demand t
   :config
   ;; (require-theme 'modus-themes) ; `require-theme' is ONLY for the built-in Modus themes
-
+  (require 'modus-themes)
   ;; Add all your customizations prior to loading the themes
   (setq modus-themes-italic-constructs t
         modus-themes-bold-constructs nil)
