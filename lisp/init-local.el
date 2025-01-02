@@ -28,16 +28,33 @@
   :hook
   (after-init . delete-selection-mode))
 
+;; setting for spacious-padding https://protesilaos.com/emacs/spacious-padding
+(use-package spacious-padding
+  :ensure t
+  :defer 1
+  :config
+  (setq spacious-padding-widths
+        '( :internal-border-width 15
+           :header-line-width 4
+           :mode-line-width 6
+           :tab-width 4
+           :right-divider-width 30
+           :scroll-bar-width 8
+           :fringe-width 8))
+  (setq spacious-padding-subtle-mode-line
+        `( :mode-line-active 'default
+           :mode-line-inactive vertical-border))
+  (spacious-padding-mode 1)
+  :bind
+  (:map global-map
+        ("<f8>" . #'spacious-padding-mode)))
+
 ;; theme setting
 ;; Use Protesilaos Stavrou’s lovely modus-operandi https://gitlab.com/protesilaos/modus-themes
 ;;; For the built-in themes which cannot use `require'.
 
-(use-package modus-themes
-  :ensure t
-  :pin gnu
-  :demand t
-  :config
-  ;; (require-theme 'modus-themes) ; `require-theme' is ONLY for the built-in Modus themes
+
+(when (maybe-require-package 'modus-themes)
   (require 'modus-themes)
   ;; Add all your customizations prior to loading the themes
   (setq modus-themes-italic-constructs t
@@ -47,10 +64,32 @@
   (setq modus-themes-common-palette-overrides
         modus-themes-preset-overrides-intense)
 
-  ;; Load the theme of your choice.
-  (load-theme 'modus-operandi)
+  ;; Load the theme of your choice:
+  (load-theme 'modus-operandi :no-confirm)
 
-  (define-key global-map (kbd "<f5>") #'modus-themes-toggle))
+  (define-key global-map (kbd "<f5>") #'modus-themes-toggle)  )
+
+
+
+;; (use-package modus-themes
+;;   :ensure t
+;;   :pin gnu
+;;   :demand t
+;;   :config
+;;   ;; (require-theme 'modus-themes) ; `require-theme' is ONLY for the built-in Modus themes
+;;   (require 'modus-themes)
+;;   ;; Add all your customizations prior to loading the themes
+;;   (setq modus-themes-italic-constructs t
+;;         modus-themes-bold-constructs nil)
+
+;;   ;; Maybe define some palette overrides, such as by using our presets
+;;   (setq modus-themes-common-palette-overrides
+;;         modus-themes-preset-overrides-intense)
+
+;;   ;; Load the theme of your choice.
+;;   (load-theme 'modus-operandi)
+
+;;   (define-key global-map (kbd "<f5>") #'modus-themes-toggle))
 
 
 ;; Font setting
@@ -161,26 +200,7 @@ The DWIM behaviour of this command is as follows:
         ("C-x L" . #'pulsar-highlight-line))
   )
 
-;; setting for spacious-padding https://protesilaos.com/emacs/spacious-padding
-(use-package spacious-padding
-  :ensure t
-  :defer 1
-  :config
-  (setq spacious-padding-widths
-        '( :internal-border-width 15
-           :header-line-width 4
-           :mode-line-width 6
-           :tab-width 4
-           :right-divider-width 30
-           :scroll-bar-width 8
-           :fringe-width 8))
-  (setq spacious-padding-subtle-mode-line
-        `( :mode-line-active 'default
-           :mode-line-inactive vertical-border))
-  (spacious-padding-mode 1)
-  :bind
-  (:map global-map
-        ("<f8>" . #'spacious-padding-mode)))
+
 
 (use-package dired-subtree
   :ensure t
