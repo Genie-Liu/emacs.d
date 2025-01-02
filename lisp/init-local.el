@@ -316,5 +316,15 @@ The DWIM behaviour of this command is as follows:
   :interpreter
   ("scala" . scala-mode))
 
+;; emacs-rime setting: https://github.com/DogLooksGood/emacs-rime/blob/master/INSTALLATION.org
+;; 1. extract pre-compiled librime to rime-librime-root. Ref: https://github.com/rime/librime/releases/
+;; 2. add the header-root which contains the <emacs-module.h> header file. Depends on where you install Emacs
+(use-package rime
+  :custom
+  (default-input-method "rime")
+  (rime-librime-root "~/.emacs.d/librime/dist")
+  (rime-emacs-module-header-root "/Applications/Emacs.app/Contents/Resources/include")
+  )
+
 (provide 'init-local)
 ;;; init-locales.el ends here
