@@ -158,25 +158,6 @@ The DWIM behaviour of this command is as follows:
         ("C-x L" . #'pulsar-highlight-line))
   )
 
-;; (require 'pulsar)
-
-;; (setq pulsar-pulse-region-functions pulsar-pulse-region-common-functions)
-;; (setq pulsar-region-face 'pulsar-green) ; unchanged regions are green
-;; (setq pulsar-region-change-face 'pulsar-red) ; changed regions are red
-
-;; (add-to-list 'pulsar-pulse-functions 'switch-window)
-;; (setq pulsar-pulse t)
-;; (setq pulsar-delay 0.055)
-;; (setq pulsar-iterations 10)
-;; (setq pulsar-face 'pulsar-magenta)
-;; (setq pulsar-highlight-face 'pulsar-yellow)
-
-;; (pulsar-global-mode 1)
-
-;; (let ((map global-map))
-;;   (define-key map (kbd "C-x l") #'pulsar-pulse-line)
-;;   (define-key map (kbd "C-x L") #'pulsar-highlight-line))
-
 ;; setting for spacious-padding https://protesilaos.com/emacs/spacious-padding
 (use-package spacious-padding
   :ensure t
@@ -193,7 +174,7 @@ The DWIM behaviour of this command is as follows:
   (setq spacious-padding-subtle-mode-line
         `( :mode-line-active 'default
            :mode-line-inactive vertical-border))
-  (spacious-padding-mode -1) ; disable spacious padding
+  (spacious-padding-mode 1)
   :bind
   (:map global-map
         ("<f8>" . #'spacious-padding-mode)))
