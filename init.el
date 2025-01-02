@@ -34,7 +34,7 @@
 
 ;; Bootstrap config
 
-(setq image-types (cons 'svg image-types))
+;; (setq image-types (cons 'svg image-types))
 (setq custom-file (locate-user-emacs-file "custom.el"))
 (require 'init-utils)
 (require 'init-site-lisp) ;; Must come before elpa, as it may provide package.el
