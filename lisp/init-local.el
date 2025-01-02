@@ -32,12 +32,12 @@
 ;; Use Protesilaos Stavrou’s lovely modus-operandi https://gitlab.com/protesilaos/modus-themes
 ;;; For the built-in themes which cannot use `require'.
 
-(maybe-require-package 'modus-themes  "4.6.0")
-
-(use-package emacs
+(use-package modus-themes
   :ensure t
+  :pin gnu
+  :demand t
   :config
-  (require-theme 'modus-themes) ; `require-theme' is ONLY for the built-in Modus themes
+  ;; (require-theme 'modus-themes) ; `require-theme' is ONLY for the built-in Modus themes
 
   ;; Add all your customizations prior to loading the themes
   (setq modus-themes-italic-constructs t
