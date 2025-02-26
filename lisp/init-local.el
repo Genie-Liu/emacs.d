@@ -15,7 +15,7 @@
       (package-refresh-contents))
     (package-install 'use-package)))
 
-(require 'use-package)
+(require-package 'use-package)
 
 ;; Enable defer and ensure by default for use-package
 (setq use-package-always-defer t
@@ -51,7 +51,7 @@
 
 ;; theme setting
 ;; Use Protesilaos Stavrou’s lovely modus-operandi https://gitlab.com/protesilaos/modus-themes
-;;; For the built-in themes which cannot use `require'.
+;; For the built-in themes which cannot use `require'.
 
 
 (when (maybe-require-package 'modus-themes)
@@ -67,30 +67,7 @@
   ;; Load the theme of your choice:
   (load-theme 'modus-operandi :no-confirm)
 
-  (define-key global-map (kbd "<f5>") #'modus-themes-toggle)  )
-
-
-
-;; (use-package modus-themes
-;;   :ensure t
-;;   :pin gnu
-;;   :demand t
-;;   :config
-;;   ;; (require-theme 'modus-themes) ; `require-theme' is ONLY for the built-in Modus themes
-;;   (require 'modus-themes)
-;;   ;; Add all your customizations prior to loading the themes
-;;   (setq modus-themes-italic-constructs t
-;;         modus-themes-bold-constructs nil)
-
-;;   ;; Maybe define some palette overrides, such as by using our presets
-;;   (setq modus-themes-common-palette-overrides
-;;         modus-themes-preset-overrides-intense)
-
-;;   ;; Load the theme of your choice.
-;;   (load-theme 'modus-operandi)
-
-;;   (define-key global-map (kbd "<f5>") #'modus-themes-toggle))
-
+  (define-key global-map (kbd "<f5>") #'modus-themes-toggle))
 
 ;; Font setting
 ;; Before adding the font, need to make sure the font is installed.
@@ -98,10 +75,10 @@
 ;; - DejaVu Sans Mono for Powerline
 ;; - Fira Mono for Powerline
 ;; - Menlo
-;; - Iosevka Comfy Motion Fixed
+;; - Iosevka Comfy Motion Fixed/Iosevka Comfy from project: https://github.com/protesilaos/iosevka-comfy
 ;; - Monaspace Xeon/Argon
 
-(let ((mono-spaced-font "Iosevka Comfy Motion Fixed")
+(let ((mono-spaced-font "Iosevka Comfy")
       (proportionately-spaced-font "Helvetica"))
   (set-face-attribute 'default nil :family mono-spaced-font :height 140)
   (set-face-attribute 'fixed-pitch nil :family mono-spaced-font :height 1.0)
@@ -134,21 +111,31 @@ The DWIM behaviour of this command is as follows:
 
 (define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)
 
+
+;; (if marginalia-mode 1 -1)
+
 ;; Use icon fonts
 (use-package nerd-icons
   :ensure t)
 
-(use-package nerd-icons-completion
+(use-package
+  nerd-icons-completion
   :ensure t
   :after marginalia
-  :config
-  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+  ;; :config
+  ;; (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup)
+  :hook
+  (marginalia-mode . nerd-icons-completion-marginalia-setup)
+  ;; (marginalia-mode . nerd-icons-completion-mode)
+  )
 
-(use-package nerd-icons-corfu
+;; (nerd-icons-completion-marginalia-setup)
+
+(use-package
+  nerd-icons-corfu
   :ensure t
   :after corfu
-  :config
-  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+  :config (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
 (use-package nerd-icons-dired
   :ensure t
@@ -197,8 +184,7 @@ The DWIM behaviour of this command is as follows:
   :bind
   (:map global-map
         ("C-x l" . #'pulsar-pulse-line)
-        ("C-x L" . #'pulsar-highlight-line))
-  )
+        ("C-x L" . #'pulsar-highlight-line)))
 
 
 
@@ -313,6 +299,30 @@ The DWIM behaviour of this command is as follows:
 (custom-set-variables
  '(markdown-command "/opt/homebrew/bin/pandoc"))
 
+(use-package ox
+  :ensure nil
+  :after org
+  :config
+  (add-to-list 'org-export-backends 'pandoc)
+  :custom
+  (org-export-with-toc t)
+  (org-export-with-tags 'not-in-toc)
+  (org-export-with-email t)
+  (org-export-with-author t)
+  (org-export-with-drawers nil)
+  (org-export-with-priority t)
+  (org-export-with-footnotes t)
+  (org-export-with-smart-quotes t)
+  (org-export-with-section-numbers nil)
+  (org-export-with-sub-superscripts '{})
+  ;; Use :eval never-export header argument to avoid evaluating.
+  (org-export-use-babel t)
+  (org-export-headline-levels 5)
+  (org-export-coding-system 'utf-8)
+  (org-export-with-broken-links 'mark)
+  ;; (org-export-backends '(ascii html md icalendar man))) ; original value
+  )
+
 ;; setting for eglot
 ;; (add-hook 'c-mode-hook 'eglot-ensure)
 ;; (add-hook 'c++-mode-hook 'eglot-ensure)
@@ -332,6 +342,7 @@ The DWIM behaviour of this command is as follows:
         (x-select-enable-clipboard t))
     (kill-new filename)))
 
+(global-display-fill-column-indicator-mode 1)
 
 ;; scala setting
 (use-package scala-mode
@@ -343,12 +354,37 @@ The DWIM behaviour of this command is as follows:
 ;; 1. extract pre-compiled librime to rime-librime-root. Ref: https://github.com/rime/librime/releases/
 ;; 2. add the header-root which contains the <emacs-module.h> header file. Depends on where you install Emacs
 ;; Some configuration for rime: https://github.com/DogLooksGood/emacs-rime/tree/master?tab=readme-ov-file#%E6%89%93%E5%BC%80-rime-%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6
-(use-package rime
-  :custom
-  (default-input-method "rime")
-  (rime-librime-root "~/.emacs.d/librime/dist")
-  (rime-emacs-module-header-root "/Applications/Emacs.app/Contents/Resources/include")
+;; (use-package rime
+;;   :custom
+;;   (default-input-method "rime")
+;;   (rime-librime-root "~/.emacs.d/librime/dist")
+;;   (rime-emacs-module-header-root "/Applications/Emacs.app/Contents/Resources/include")
+;;   )
+
+;; scheme setting using racket mode and racket-langserver
+;; racket-langserver: https://github.com/jeapostrophe/racket-langserver
+;; racket-mode: https://www.racket-mode.com/
+(use-package
+  racket-mode
+  :ensure t
+  :bind
+  (:map racket-mode-map
+        ("C-c C-c" . racket-run))
+  :hook
+  (racket-mode . eglot-ensure)
+  :mode ("\\.ss\\'" . racket-mode) ;; using config doesn't work, need mode binding
+  ;; :config
+  ;; (add-to-list 'auto-mode-alist '("\\.ss\\'" . racket-mode)))
   )
+
+;; setting for fill column, enable it for text mode
+;; If you want to autofill the written paragraph, you can use (fill-region) or (fill-paragraph)
+;; (setq-default fill-column 80)
+;; (add-hook 'text-mode-hook 'auto-fill-mode)
+;; (add-hook 'org-mode-hook 'auto-fill-mode)
+
+;; 保存文件时自动删除末尾空白字符
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (provide 'init-local)
 ;;; init-locales.el ends here

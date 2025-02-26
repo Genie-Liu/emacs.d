@@ -5,10 +5,12 @@
 ;;; Code:
 
 (when (maybe-require-package 'eglot)
-  (maybe-require-package 'consult-eglot))
+  (maybe-require-package 'consult-eglot)
+  )
 
 (require 'eglot)
 
+(add-to-list 'eglot-server-programs '(racket-mode . ("racket" "-l" "racket-langserver")))
 (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
 (add-to-list 'eglot-server-programs '((python-mode) "pylsp"))
 
