@@ -44,7 +44,7 @@
   (setq spacious-padding-subtle-mode-line
         `( :mode-line-active 'default
            :mode-line-inactive vertical-border))
-  (spacious-padding-mode 1)
+  (spacious-padding-mode -1)
   :bind
   (:map global-map
         ("<f8>" . #'spacious-padding-mode)))
@@ -75,14 +75,48 @@
 ;; - DejaVu Sans Mono for Powerline
 ;; - Fira Mono for Powerline
 ;; - Menlo
-;; - Iosevka Comfy Motion Fixed/Iosevka Comfy from project: https://github.com/protesilaos/iosevka-comfy
-;; - Monaspace Xeon/Argon
+;; - Aporetic Project by protesilaos
+;; https://github.com/protesilaos/aporetic/tree/main
+;; - Monaspace Xenon/Argon/Radon
 
-(let ((mono-spaced-font "Iosevka Comfy")
-      (proportionately-spaced-font "Helvetica"))
+;; serif proportion: Times New Roman, Georgia
+;; sans proportionate: Helvetica
+
+;; Chinese font:
+;; serif: SimSong 宋体, STHeiti
+
+(let ((mono-spaced-font "Aporetic Sans Mono")
+      (proportionately-spaced-font "Helvetica")
+      (mono-spaced-serif-font "Courier New"))
+  ;; enable for reading blog
+  ;; (set-face-attribute 'default nil
+  ;;                     :family proportionately-spaced-font
+  ;;                     :height 140)
+  ;; enable for coding
   (set-face-attribute 'default nil :family mono-spaced-font :height 140)
-  (set-face-attribute 'fixed-pitch nil :family mono-spaced-font :height 1.0)
-  (set-face-attribute 'variable-pitch nil :family proportionately-spaced-font :height 1.0))
+  (set-face-attribute 'fixed-pitch nil
+                      :family mono-spaced-font
+                      :height 1.0)
+  (set-face-attribute 'variable-pitch nil
+                      :family proportionately-spaced-font
+                      :height 1.0))
+
+;; toggle fonts
+(defvar my-font-list '("Aporetic Sans Mono-14" "Menlo-14" "Helvetica-14")
+  "A list of fonts to toggle through.")
+
+(defvar my-font-index 0
+  "Current index in `my-font-list`.")
+
+(defun toggle-font ()
+  (interactive)
+  (setq my-font-index (% (+ my-font-index 1) (length my-font-list)))
+  (set-frame-font (nth my-font-index my-font-list) nil t)
+  (message "Current font: %s" (nth my-font-index my-font-list)))
+
+;; set line spacing
+(setq-default line-spacing 1)
+;; (setq line-spacing 1)
 
 ;; better C-g
 (defun prot/keyboard-quit-dwim ()
@@ -111,8 +145,10 @@ The DWIM behaviour of this command is as follows:
 
 (define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)
 
-
-;; (if marginalia-mode 1 -1)
+;; window movement setting
+;; windmove: S-<left>, S-<right>, S-<up>, S-<down>.
+(global-set-key (kbd "M-o") 'other-window)
+;; (windmove-default-keybindings) ;; has conflicts with S-<cursor> https://www.emacswiki.org/emacs/OrgMode#h5o-8
 
 ;; Use icon fonts
 (use-package nerd-icons
@@ -122,20 +158,15 @@ The DWIM behaviour of this command is as follows:
   nerd-icons-completion
   :ensure t
   :after marginalia
-  ;; :config
-  ;; (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup)
   :hook
-  (marginalia-mode . nerd-icons-completion-marginalia-setup)
-  ;; (marginalia-mode . nerd-icons-completion-mode)
-  )
-
-;; (nerd-icons-completion-marginalia-setup)
+  (marginalia-mode . nerd-icons-completion-marginalia-setup))
 
 (use-package
   nerd-icons-corfu
   :ensure t
   :after corfu
-  :config (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+  :config
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
 (use-package nerd-icons-dired
   :ensure t
@@ -144,7 +175,8 @@ The DWIM behaviour of this command is as follows:
 
 ;; denote setting
 
-(use-package denote
+(use-package
+  denote
   :ensure t
   :bind
   ("C-c n n" . #'denote)
@@ -153,9 +185,10 @@ The DWIM behaviour of this command is as follows:
   ("C-c n b" . #'denote-backlinks)
   ("C-c n r" . #'denote-rename-file)
   :config
-  (setq denote-directory (expand-file-name "~/OneDrive/documents/sync_doc/notes/"))
+  (setq denote-directory (expand-file-name "~/Documents/OneDrive/documents/sync_doc/notes/"))
   (setq denote-known-keywords '("emacs" "life" "work" "learn"))
-  (setq denote-file-type 'markdown-yaml))
+  ;; (setq denote-file-type 'markdown-yaml)
+  )
 
 (use-package consult-denote
   :ensure t
@@ -229,64 +262,113 @@ The DWIM behaviour of this command is as follows:
 
 (require-package 'elisp-format)
 
+;; ;; set org agenda files
 
-;; pretty format for elisp-mode
-;; (require-package 'elisp-format)
+;; (setq org-return-follows-link t org-deadline-warning-days 30)
 
-;; theme settings
+;; (when (file-exists-p "~/Documents/OneDrive/documents/sync_doc/org/")
+;;   ;; (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
+;;   (setq org-agenda-files '("~/Documents/OneDrive/documents/sync_doc/org/inbox.org"
+;;                            "~/Documents/OneDrive/documents/sync_doc/org/repeats.org"
+;;                            "~/Documents/OneDrive/documents/sync_doc/org/projects.org"
+;;                            "~/Documents/OneDrive/documents/sync_doc/org/work.org"
+;;                            "~/Documents/OneDrive/documents/sync_doc/org/improve.org"
+;;                            "~/Documents/OneDrive/documents/sync_doc/org/personal.org")))
 
-;; (require-package 'molokai-theme)
-;; (load-theme 'molokai)
+;; (setq org-capture-templates `(("t" "todo" entry (file "~/Documents/OneDrive/documents/sync_doc/org/inbox.org")
+;;                                         ; "" => `org-default-notes-file'
+;;                                "* TODO %?\n%U\n"
+;;                                :clock-resume t)
+;;                               ("n" "note" entry (file "") "* %? :NOTE:\n%U\n%a\n"
+;;                                :clock-resume t)))
 
-;; (setq custom-enabled-themes '(sanityinc-tomorrow-day))
-;; (setq custom-enabled-themes '(sanityinc-tomorrow-bright))
-;; (reapply-themes)
+;; ;; (setq org-capture-templates
+;; ;;       '(("t" "Todo" entry (file "~/org/inbox.org") "* TODO %?\n %i\n %a")))
 
-;; set org agenda files
+;; (setq org-agenda-custom-commands
+;;       '(
+;;         (" " "Agenda"
+;;          ((agenda ""
+;;                   ((org-agenda-span 'week)))
+;;           (todo "TODO"
+;;                 ((org-agenda-overriding-header "Unscheduled personal tasks")
+;;                  (org-agenda-files '("~/Documents/OneDrive/documents/sync_doc/org/personal.org"))
+;;                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))))
+;;           (todo "TODO"
+;;                 ((org-agenda-overriding-header "Unscheduled work tasks")
+;;                  (org-agenda-files '("~/Documents/OneDrive/documents/sync_doc/org/work.org"))
+;;                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))))
+;;           (todo "TODO"
+;;                 ((org-agenda-overriding-header "Unscheduled tasks")
+;;                  (org-agenda-files '("~/Documents/OneDrive/documents/sync_doc/org/inbox.org"))
+;;                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))))
+;;           (todo "TODO"
+;;                 ((org-agenda-overriding-header "Unscheduled projects tasks")
+;;                  (org-agenda-files '("~/Documents/OneDrive/documents/sync_doc/org/projects.org"))
+;;                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))))))
+;;         ;; default setting of agenda
+;;         ("n" "Agenda and all TODOs"
+;;          ((agenda "")
+;;           (alltodo "")))))
 
-(setq org-return-follows-link t org-deadline-warning-days 30)
 
-(when (file-exists-p "~/OneDrive/documents/sync_doc/org/")
-  ;; (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
-  (setq org-agenda-files '("~/OneDrive/documents/sync_doc/org/inbox.org"
-                           "~/OneDrive/documents/sync_doc/org/repeats.org"
-                           "~/OneDrive/documents/sync_doc/org/projects.org"
-                           "~/OneDrive/documents/sync_doc/org/work.org"
-                           "~/OneDrive/documents/sync_doc/org/improve.org"
-                           "~/OneDrive/documents/sync_doc/org/personal.org")))
+;;; Org-mode Configuration
 
-(setq org-capture-templates `(("t" "todo" entry (file "~/OneDrive/documents/sync_doc/org/inbox.org")
-                                        ; "" => `org-default-notes-file'
-                               "* TODO %?\n%U\n"
-                               :clock-resume t)
-                              ("n" "note" entry (file "") "* %? :NOTE:\n%U\n%a\n"
-                               :clock-resume t)))
+;; Define the home directory for org files
+(defvar org-home "~/Documents/OneDrive/documents/sync_doc/org/"
+  "The root directory for all org files.")
 
-;; (setq org-capture-templates
-;;       '(("t" "Todo" entry (file "~/org/inbox.org") "* TODO %?\n %i\n %a")))
+;; Basic org settings
+(setq org-return-follows-link t       ; Follow links with RET
+      org-deadline-warning-days 30)   ; Show deadline warnings 30 days in advance
 
+;; Set org agenda files if org directory exists
+(when (file-exists-p org-home)
+  ;; Option 1: Recursively find all org files (commented out)
+  ;; (setq org-agenda-files (directory-files-recursively org-home "\\.org$"))
+
+  ;; Option 2: Explicitly list org files
+  (setq org-agenda-files (mapcar (lambda (file) (expand-file-name file org-home))
+                                 '("inbox.org"
+                                   "repeats.org"
+                                   "projects.org"
+                                   "work.org"
+                                   "improve.org"
+                                   "personal.org"))))
+
+;; Org capture templates
+(setq org-capture-templates
+      `(("t" "todo" entry
+         (file ,(expand-file-name "inbox.org" org-home))
+         "* TODO %?\n%U\n"
+         :clock-resume t)
+        ("n" "note" entry
+         (file "")  ; Uses `org-default-notes-file'
+         "* %? :NOTE:\n%U\n%a\n"
+         :clock-resume t)))
+
+;; Org agenda custom commands
 (setq org-agenda-custom-commands
-      '(
-        (" " "Agenda"
+      '((" " "Agenda"
          ((agenda ""
                   ((org-agenda-span 'week)))
           (todo "TODO"
                 ((org-agenda-overriding-header "Unscheduled personal tasks")
-                 (org-agenda-files '("~/OneDrive/documents/sync_doc/org/personal.org"))
+                 (org-agenda-files (list (expand-file-name "personal.org" org-home)))
                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))))
           (todo "TODO"
                 ((org-agenda-overriding-header "Unscheduled work tasks")
-                 (org-agenda-files '("~/OneDrive/documents/sync_doc/org/work.org"))
+                 (org-agenda-files (list (expand-file-name "work.org" org-home)))
                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))))
           (todo "TODO"
                 ((org-agenda-overriding-header "Unscheduled tasks")
-                 (org-agenda-files '("~/OneDrive/documents/sync_doc/org/inbox.org"))
+                 (org-agenda-files (list (expand-file-name "inbox.org" org-home)))
                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))))
           (todo "TODO"
                 ((org-agenda-overriding-header "Unscheduled projects tasks")
-                 (org-agenda-files '("~/OneDrive/documents/sync_doc/org/projects.org"))
+                 (org-agenda-files (list (expand-file-name "projects.org" org-home)))
                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))))))
-        ;; default setting of agenda
+        ;; Default agenda view
         ("n" "Agenda and all TODOs"
          ((agenda "")
           (alltodo "")))))
@@ -323,11 +405,6 @@ The DWIM behaviour of this command is as follows:
   ;; (org-export-backends '(ascii html md icalendar man))) ; original value
   )
 
-;; setting for eglot
-;; (add-hook 'c-mode-hook 'eglot-ensure)
-;; (add-hook 'c++-mode-hook 'eglot-ensure)
-;; (add-hook 'python-mode-hook 'eglot-ensure)
-
 (defun my-get-file-name ()
   "Put the current file name on the clipboard"
   (interactive)
@@ -350,17 +427,6 @@ The DWIM behaviour of this command is as follows:
   :interpreter
   ("scala" . scala-mode))
 
-;; emacs-rime setting: https://github.com/DogLooksGood/emacs-rime/blob/master/INSTALLATION.org
-;; 1. extract pre-compiled librime to rime-librime-root. Ref: https://github.com/rime/librime/releases/
-;; 2. add the header-root which contains the <emacs-module.h> header file. Depends on where you install Emacs
-;; Some configuration for rime: https://github.com/DogLooksGood/emacs-rime/tree/master?tab=readme-ov-file#%E6%89%93%E5%BC%80-rime-%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6
-;; (use-package rime
-;;   :custom
-;;   (default-input-method "rime")
-;;   (rime-librime-root "~/.emacs.d/librime/dist")
-;;   (rime-emacs-module-header-root "/Applications/Emacs.app/Contents/Resources/include")
-;;   )
-
 ;; scheme setting using racket mode and racket-langserver
 ;; racket-langserver: https://github.com/jeapostrophe/racket-langserver
 ;; racket-mode: https://www.racket-mode.com/
@@ -372,9 +438,8 @@ The DWIM behaviour of this command is as follows:
         ("C-c C-c" . racket-run))
   :hook
   (racket-mode . eglot-ensure)
-  :mode ("\\.ss\\'" . racket-mode) ;; using config doesn't work, need mode binding
-  ;; :config
-  ;; (add-to-list 'auto-mode-alist '("\\.ss\\'" . racket-mode)))
+  :mode
+  ("\\.ss\\'" . racket-mode) ;; using config doesn't work, need mode binding
   )
 
 ;; setting for fill column, enable it for text mode
@@ -382,9 +447,73 @@ The DWIM behaviour of this command is as follows:
 ;; (setq-default fill-column 80)
 ;; (add-hook 'text-mode-hook 'auto-fill-mode)
 ;; (add-hook 'org-mode-hook 'auto-fill-mode)
+;; display-fill-column-indicator-mode
+;; combine visual-line-mode and visual-fill-column-mode
 
 ;; 保存文件时自动删除末尾空白字符
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;; nov.el a epub reading major mode
+;; https://depp.brause.cc/nov.el/
+
+(require 'nov)
+(setq nov-unzip-program (executable-find "bsdtar")
+      nov-unzip-args '("-xC" directory "-f" filename))
+
+(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+
+;; Define font for nov
+(defun my-nov-font-setup ()
+  (face-remap-add-relative 'variable-pitch :family "Heiti SC"
+                           :height 1.0))
+(add-hook 'nov-mode-hook 'my-nov-font-setup)
+
+;; elfeed for RSS
+;; https://github.com/skeeto/elfeed?tab=readme-ov-file
+(global-set-key (kbd "C-x w") 'elfeed)
+
+;; Add RSS source
+;; (setq elfeed-feeds '(("https://planet.emacslife.com/atom.xml" emacs)
+;;                      "https://www.solidot.org/index.rss"
+;;                      ("https://simonwillison.net/atom/everything/" simon ai)))
+
+;; (defvar elfeed-feeds-alist '(("https://planet.emacslife.com/atom.xml" emacs)
+;;                              "https://www.solidot.org/index.rss"
+;;                              ("https://simonwillison.net/atom/everything/" simon ai)))
+
+
+;; Config RSS feeds with org file
+(elfeed-org)
+(setq rmh-elfeed-org-files (list "~/.emacs.d/elfeed.org"))
+
+;; (image-type-available-p 'svg)
+(add-to-list 'image-types 'svg)
+
+
+;; highlight codetag
+;; https://www.jamescherti.com/emacs-highlight-keywords-like-todo-fixme-note/
+
+(defvar highlight-codetags-keywords
+  '(("\\<\\(TODO\\|FIXME\\|BUG\\|XXX\\)\\>" 1 font-lock-warning-face prepend)
+    ("\\<\\(NOTE\\|HACK\\)\\>" 1 font-lock-doc-face prepend)))
+
+(define-minor-mode highlight-codetags-local-mode
+  "Highlight codetags like TODO, FIXME..."
+  :global nil
+  (if highlight-codetags-local-mode
+      (font-lock-add-keywords nil highlight-codetags-keywords)
+    (font-lock-remove-keywords nil highlight-codetags-keywords))
+
+  ;; Fontify the current buffer
+  (when (bound-and-true-p font-lock-mode)
+    (if (fboundp 'font-lock-flush)
+        (font-lock-flush)
+      (with-no-warnings (font-lock-fontify-buffer)))))
+
+(add-hook 'prog-mode-hook #'highlight-codetags-local-mode)
+
+
+
 
 (provide 'init-local)
 ;;; init-locales.el ends here
