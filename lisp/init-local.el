@@ -44,7 +44,7 @@
   (setq spacious-padding-subtle-mode-line
         `( :mode-line-active 'default
            :mode-line-inactive vertical-border))
-  (spacious-padding-mode -1)
+  (spacious-padding-mode 1)
   :bind
   (:map global-map
         ("<f8>" . #'spacious-padding-mode)))
@@ -52,7 +52,6 @@
 ;; theme setting
 ;; Use Protesilaos Stavrou’s lovely modus-operandi https://gitlab.com/protesilaos/modus-themes
 ;; For the built-in themes which cannot use `require'.
-
 
 (when (maybe-require-package 'modus-themes)
   (require 'modus-themes)
@@ -187,7 +186,7 @@ The DWIM behaviour of this command is as follows:
   :config
   (setq denote-directory (expand-file-name "~/Documents/OneDrive/documents/sync_doc/notes/"))
   (setq denote-known-keywords '("emacs" "life" "work" "learn"))
-  ;; (setq denote-file-type 'markdown-yaml)
+  (setq denote-file-type 'markdown-yaml)
   )
 
 (use-package consult-denote
@@ -438,9 +437,18 @@ The DWIM behaviour of this command is as follows:
         ("C-c C-c" . racket-run))
   :hook
   (racket-mode . eglot-ensure)
+  (racket-mode . paredit-mode)
   :mode
   ("\\.ss\\'" . racket-mode) ;; using config doesn't work, need mode binding
   )
+
+;; zig-mode configuration https://github.com/ziglang/zig-mode
+(use-package
+  zig-mode
+  :ensure t
+  :mode ("\\.\\(zig\\|zon\\)\\'" . zig-mode)
+  )
+
 
 ;; setting for fill column, enable it for text mode
 ;; If you want to autofill the written paragraph, you can use (fill-region) or (fill-paragraph)
@@ -456,35 +464,44 @@ The DWIM behaviour of this command is as follows:
 ;; nov.el a epub reading major mode
 ;; https://depp.brause.cc/nov.el/
 
-(require 'nov)
-(setq nov-unzip-program (executable-find "bsdtar")
-      nov-unzip-args '("-xC" directory "-f" filename))
+(use-package nov
+  :ensure t
+  :mode ("\\.epub\\'" . nov-mode)
+  :config
+  (setq nov-unzip-program (executable-find "bsdtar")
+        nov-unzip-args '("-xC" directory "-f" filename))
 
-(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
-
-;; Define font for nov
-(defun my-nov-font-setup ()
-  (face-remap-add-relative 'variable-pitch :family "Heiti SC"
-                           :height 1.0))
-(add-hook 'nov-mode-hook 'my-nov-font-setup)
+  ;; Define font for nov
+  (defun my-nov-font-setup ()
+    (face-remap-add-relative 'variable-pitch
+                             :family "Heiti SC"
+                             :height 1.0))
+  (add-hook 'nov-mode-hook #'my-nov-font-setup))
 
 ;; elfeed for RSS
 ;; https://github.com/skeeto/elfeed?tab=readme-ov-file
-(global-set-key (kbd "C-x w") 'elfeed)
-
-;; Add RSS source
-;; (setq elfeed-feeds '(("https://planet.emacslife.com/atom.xml" emacs)
-;;                      "https://www.solidot.org/index.rss"
-;;                      ("https://simonwillison.net/atom/everything/" simon ai)))
-
-;; (defvar elfeed-feeds-alist '(("https://planet.emacslife.com/atom.xml" emacs)
-;;                              "https://www.solidot.org/index.rss"
-;;                              ("https://simonwillison.net/atom/everything/" simon ai)))
-
+(use-package elfeed
+  :ensure t
+  :bind ("C-x w" . elfeed)
+  ;; 如果你想直接在这里写 feeds，可以用 :custom
+  ;; :custom
+  ;; (elfeed-feeds
+  ;;  '(("https://planet.emacslife.com/atom.xml" emacs)
+  ;;    "https://www.solidot.org/index.rss"
+  ;;    ("https://simonwillison.net/atom/everything/" simon ai)))
+  :hook (elfeed-search-mode . elfeed-update)
+  )
 
 ;; Config RSS feeds with org file
-(elfeed-org)
-(setq rmh-elfeed-org-files (list "~/.emacs.d/elfeed.org"))
+;; 配合 org 文件管理 feeds
+(use-package elfeed-org
+  :ensure t
+  :after elfeed
+  :demand t
+  :custom
+  (rmh-elfeed-org-files (list "~/.emacs.d/elfeed.org"))
+  :config
+  (elfeed-org))
 
 ;; (image-type-available-p 'svg)
 (add-to-list 'image-types 'svg)
@@ -511,9 +528,6 @@ The DWIM behaviour of this command is as follows:
       (with-no-warnings (font-lock-fontify-buffer)))))
 
 (add-hook 'prog-mode-hook #'highlight-codetags-local-mode)
-
-
-
 
 (provide 'init-local)
 ;;; init-locales.el ends here

@@ -21,8 +21,6 @@
   (setq-default corfu-quit-no-match 'separator)
   (add-hook 'after-init-hook 'global-corfu-mode)
 
-  (define-key corfu-mode-map (kbd "<tab>") 'corfu-complete)
-
   (with-eval-after-load 'corfu
     (corfu-popupinfo-mode))
 
