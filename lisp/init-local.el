@@ -242,74 +242,7 @@ The DWIM behaviour of this command is as follows:
   (setq trashed-sort-key '("Date deleted" . t))
   (setq trashed-date-format "%Y-%m-%d %H:%M:%S"))
 
-
-;; setting for python enviroment
-
-;; (require-package 'conda)
-;; if you want interactive shell support, include:
-;; (conda-env-initialize-interactive-shells)
-;; if you want eshell support, include:
-;; (conda-env-initialize-eshell)
-;; if you want auto-activation (see below for details), include:
-;; (conda-env-autoactivate-mode t)
-;; if you want to automatically activate a conda environment on the opening of a file:
-;; (add-to-hook 'find-file-hook (lambda () (when (bound-and-true-p conda-project-env-path)
-;;                                           (conda-env-activate-for-buffer))))
-
-;; (setq conda-env-home-directory (expand-file-name "~/miniconda3/"))
-
-
 (require-package 'elisp-format)
-
-;; ;; set org agenda files
-
-;; (setq org-return-follows-link t org-deadline-warning-days 30)
-
-;; (when (file-exists-p "~/Documents/OneDrive/documents/sync_doc/org/")
-;;   ;; (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
-;;   (setq org-agenda-files '("~/Documents/OneDrive/documents/sync_doc/org/inbox.org"
-;;                            "~/Documents/OneDrive/documents/sync_doc/org/repeats.org"
-;;                            "~/Documents/OneDrive/documents/sync_doc/org/projects.org"
-;;                            "~/Documents/OneDrive/documents/sync_doc/org/work.org"
-;;                            "~/Documents/OneDrive/documents/sync_doc/org/improve.org"
-;;                            "~/Documents/OneDrive/documents/sync_doc/org/personal.org")))
-
-;; (setq org-capture-templates `(("t" "todo" entry (file "~/Documents/OneDrive/documents/sync_doc/org/inbox.org")
-;;                                         ; "" => `org-default-notes-file'
-;;                                "* TODO %?\n%U\n"
-;;                                :clock-resume t)
-;;                               ("n" "note" entry (file "") "* %? :NOTE:\n%U\n%a\n"
-;;                                :clock-resume t)))
-
-;; ;; (setq org-capture-templates
-;; ;;       '(("t" "Todo" entry (file "~/org/inbox.org") "* TODO %?\n %i\n %a")))
-
-;; (setq org-agenda-custom-commands
-;;       '(
-;;         (" " "Agenda"
-;;          ((agenda ""
-;;                   ((org-agenda-span 'week)))
-;;           (todo "TODO"
-;;                 ((org-agenda-overriding-header "Unscheduled personal tasks")
-;;                  (org-agenda-files '("~/Documents/OneDrive/documents/sync_doc/org/personal.org"))
-;;                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))))
-;;           (todo "TODO"
-;;                 ((org-agenda-overriding-header "Unscheduled work tasks")
-;;                  (org-agenda-files '("~/Documents/OneDrive/documents/sync_doc/org/work.org"))
-;;                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))))
-;;           (todo "TODO"
-;;                 ((org-agenda-overriding-header "Unscheduled tasks")
-;;                  (org-agenda-files '("~/Documents/OneDrive/documents/sync_doc/org/inbox.org"))
-;;                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))))
-;;           (todo "TODO"
-;;                 ((org-agenda-overriding-header "Unscheduled projects tasks")
-;;                  (org-agenda-files '("~/Documents/OneDrive/documents/sync_doc/org/projects.org"))
-;;                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))))))
-;;         ;; default setting of agenda
-;;         ("n" "Agenda and all TODOs"
-;;          ((agenda "")
-;;           (alltodo "")))))
-
 
 ;;; Org-mode Configuration
 
