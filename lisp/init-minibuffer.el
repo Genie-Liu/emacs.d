@@ -6,10 +6,19 @@
 (when (maybe-require-package 'vertico)
   (add-hook 'after-init-hook 'vertico-mode)
 
+  ;; --- 新增：开启 Vertico 多源显示模式 ---
+  (vertico-multiform-mode)
+
   (when (maybe-require-package 'embark)
+    (setq prefix-help-command #'embark-prefix-help-command)
+
     (with-eval-after-load 'vertico
+
       (define-key vertico-map (kbd "C-c C-o") 'embark-export)
-      (define-key vertico-map (kbd "C-c C-c") 'embark-act)))
+      (define-key vertico-map (kbd "C-c C-c") 'embark-act))
+    ;; --- 新增：设置特定类别的显示方式（例如 Embark 快捷键用网格显示） ---
+    (add-to-list 'vertico-multiform-categories '(embark-keybinding grid)))
+
   ;; https://github.com/purcell/whole-line-or-region/issues/30#issuecomment-3388095018
   (with-eval-after-load 'embark
     (push 'embark--mark-target
