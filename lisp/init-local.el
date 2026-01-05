@@ -84,7 +84,7 @@
 ;; Chinese font:
 ;; serif: SimSong 宋体, STHeiti
 
-(let ((mono-spaced-font "Aporetic Sans Mono")
+(let ((mono-spaced-font "Menlo")
       (proportionately-spaced-font "Helvetica")
       (mono-spaced-serif-font "Courier New"))
   ;; enable for reading blog
@@ -461,6 +461,65 @@ The DWIM behaviour of this command is as follows:
       (with-no-warnings (font-lock-fontify-buffer)))))
 
 (add-hook 'prog-mode-hook #'highlight-codetags-local-mode)
+
+;; 1. Built-in Tree-sitter (Note: :ensure nil)
+(use-package treesit
+  :ensure nil
+  :mode (("\\.py\\'" . python-ts-mode)
+         ("\\.bash\\'" . bash-ts-mode))
+  :preface
+  (setq treesit-language-source-alist
+        '((cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+          (c "https://github.com/tree-sitter/tree-sitter-c")
+          (python "https://github.com/tree-sitter/tree-sitter-python")
+          (bash "https://github.com/tree-sitter/tree-sitter-bash")
+          (zig "https://github.com/tree-sitter-grammars/tree-sitter-zig" "master" "src")))
+  :config
+  (setq major-mode-remap-alist
+        '((c-mode . c-ts-mode)
+          (c++-mode . c++-ts-mode)
+          (c-or-c++-mode . c-or-c++-ts-mode)
+          (python-mode . python-ts-mode)
+          (bash-mode . bash-ts-mode)
+          (zig-mode . zig-ts-mode))))
+
+;; 2. Automate Grammar Installations
+(use-package treesit-auto
+  :ensure t
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (global-treesit-auto-mode))
+
+;; 3. Zig Mode (Using package-vc-install for Emacs 29+)
+(unless (package-installed-p 'zig-ts-mode)
+  (package-vc-install "https://github.com/Ziqi-Yang/zig-ts-mode"))
+
+(use-package zig-ts-mode
+  :mode "\\.zig\\'")
+
+;; Then you can just run this to install any of the above:
+;; M-x treesit-install-language-grammar RET <lang>
+
+;; setting for telega
+(use-package telega
+  :commands (telega)
+  :defer t
+  :config
+  (setq telega-server-libs-prefix "/opt/homebrew")
+  (setq telega-proxies '((:server "127.0.0.1" :port 7891 :enable t :type (:@type "proxyTypeSocks5") :use_proxy_for_dns t))))
+
+(with-eval-after-load 'eat
+  (add-hook 'eshell-mode-hook #'eat-eshell-mode)
+  ;; 开启此项后，eat 会自动接管 Eshell 中的交互式程序
+  (setq eat-eshell-visual-command-mode t))
+
+(use-package pangu-spacing
+  :ensure t
+  :config
+  (global-pangu-spacing-mode 1)
+  ;; 让他真的在文件中插入空格，而不仅仅是视觉上的
+  (setq pangu-spacing-real-insert-seperator t))
 
 (provide 'init-local)
 ;;; init-locales.el ends here
